@@ -19,6 +19,8 @@ public class Animal : MonoBehaviour
 	private ParticleEmitter innerFire;
 	private ParticleEmitter outerFire;
 
+    private Ignite fireSensor;
+
 	private GameManager gameManager;
 
 	private float health;
@@ -37,6 +39,8 @@ public class Animal : MonoBehaviour
 
 		innerFire = this.transform.Find("Fire/InnerCore").GetComponent<ParticleEmitter>();
 		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();
+
+        fireSensor = this.GetComponentInChildren<Ignite>();
 	}
 	
 	// Update is called once per frame
@@ -52,6 +56,8 @@ public class Animal : MonoBehaviour
 
 			return;
 		}
+
+        fireSensor.onFire = onFire;
 
 		health -= burningRate * Time.deltaTime;
 		spriteRenderer.color = Color.Lerp (Color.white, Color.red, (initHealth - health) / initHealth);

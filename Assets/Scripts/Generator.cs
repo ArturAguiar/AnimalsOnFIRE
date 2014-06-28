@@ -6,7 +6,7 @@ public class Generator : MonoBehaviour {
 	public Animal squirrel;
 	public Bush bush;
 
-	private const int SQUIRREL_INTERVAL = 1000;
+	private const int SQUIRREL_INTERVAL = 200;
 	private int squirrel_wait = 0;
 
 	private const int BUSH_INTERVAL = 60;
