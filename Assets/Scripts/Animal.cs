@@ -16,7 +16,7 @@ public class Animal : MonoBehaviour
 	private Vector3 velocity;
 	private bool onGround = true;
 	private Rigidbody body;
-	//private SpriteRenderer spriteRenderer;
+	private SpriteRenderer spriteRenderer;
 
 	private GameManager gameManager;
 
@@ -25,8 +25,7 @@ public class Animal : MonoBehaviour
 	{
 		body = this.GetComponent<Rigidbody>();
 		velocity = new Vector3(0.0f, 0.0f, 0.0f);
-		//spriteRenderer = this.GetComponent<SpriteRenderer>();
-		//spriteRenderer.color = Color.red;
+		spriteRenderer = this.GetComponent<SpriteRenderer>();
 
 		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 		gameManager.AddAnimal (this);
@@ -38,13 +37,15 @@ public class Animal : MonoBehaviour
 		if (!onFire)
 		{
 			// AI here?
-
+			spriteRenderer.color = Color.white;
 			this.transform.position = new Vector3(this.transform.position.x - runSpeed * Time.deltaTime,
 			                                      this.transform.position.y,
 			                                      this.transform.position.z);
 
 			return;
 		}
+
+		spriteRenderer.color = Color.red;
 
 		if (Input.GetKey("right"))
 			velocity.x = speedX * Time.deltaTime;
@@ -87,6 +88,14 @@ public class Animal : MonoBehaviour
 	void OnCollisionEnter(Collision collisionInfo)
 	{
 		onGround = collisionInfo.gameObject.CompareTag("Ground");
+
+		Animal collider = (Animal)collisionInfo.collider.GetComponent<Animal> ();
+		if (collider != null) 
+		{
+			if (collider.onFire) {
+				this.onFire = true;
+			}
+		}
 	}
 
 	void OnCollisionExit(Collision collisionInfo)
