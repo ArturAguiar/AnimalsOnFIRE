@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Animal : MonoBehaviour 
 {
+
+	public float runSpeed;
+
 	public bool onFire = false;
 	public float speedX = 3.5f;
 	public float speedZ = 5.0f;
@@ -15,6 +18,8 @@ public class Animal : MonoBehaviour
 	private Rigidbody body;
 	//private SpriteRenderer spriteRenderer;
 
+	private GameManager gameManager;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -22,6 +27,9 @@ public class Animal : MonoBehaviour
 		velocity = new Vector3(0.0f, 0.0f, 0.0f);
 		//spriteRenderer = this.GetComponent<SpriteRenderer>();
 		//spriteRenderer.color = Color.red;
+
+		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+		gameManager.AddAnimal (this);
 	}
 	
 	// Update is called once per frame
@@ -30,6 +38,11 @@ public class Animal : MonoBehaviour
 		if (!onFire)
 		{
 			// AI here?
+
+			this.transform.position = new Vector3(this.transform.position.x - runSpeed * Time.deltaTime,
+			                                      this.transform.position.y,
+			                                      this.transform.position.z);
+
 			return;
 		}
 
@@ -55,7 +68,7 @@ public class Animal : MonoBehaviour
 		this.transform.position = new Vector3(this.transform.position.x + velocity.x,
 				                              this.transform.position.y + velocity.y,
 				                              this.transform.position.z + velocity.z);
-
+		
 		if (this.transform.position.z > boundaryUp)
 		{
 			this.transform.position = new Vector3(this.transform.position.x,
@@ -68,6 +81,7 @@ public class Animal : MonoBehaviour
 			                                      this.transform.position.y,
 			                                      boundaryDown);
 		}
+
 	}
 
 	void OnCollisionEnter(Collision collisionInfo)
