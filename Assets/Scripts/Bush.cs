@@ -1,21 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bush : MonoBehaviour {
-
-	public bool onFire = false;
-
+public class Bush : Flammable 
+{
 	private GameManager gameManager;
 	private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
-	void Start () {
-	
+	new void Start () 
+	{
+		base.Start();
+
 		spriteRenderer = this.GetComponent<SpriteRenderer>();
 
 		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 		gameManager.AddBush (this);
-
 	}
 	
 	// Update is called once per frame
@@ -23,14 +22,14 @@ public class Bush : MonoBehaviour {
 	
 		if (onFire) 
 		{
-			spriteRenderer.color = Color.red;
+			//spriteRenderer.color = Color.red;
 		}
 		else
 		{
 			spriteRenderer.color = Color.white;
 		}
 
-		this.transform.position = new Vector3(this.transform.position.x - gameManager.runSpeed * Time.deltaTime,
+		this.transform.position = new Vector3(this.transform.position.x - gameManager.scrollSpeed * Time.deltaTime,
 		                                      this.transform.position.y,
 		                                      this.transform.position.z);
 	}
@@ -41,7 +40,7 @@ public class Bush : MonoBehaviour {
 		if (collider != null) 
 		{
 			if (collider.onFire) {
-				this.onFire = true;
+				this.CatchFire();
 			}
 		}
 	}

@@ -19,17 +19,11 @@ public class Ignite : MonoBehaviour {
     {
         if (onFire)
         {
-            Animal a = other.GetComponent<Animal>();
-            if (a != null)
-            {
-                a.CatchFire();
-            }
-
-            Bush b = other.GetComponent<Bush>();
-            if (b != null)
-            {
-                b.onFire = true;
-            }
+			Flammable thing = other.GetComponent<Flammable>();
+			if (thing != null)
+			{
+				thing.CatchFire();
+			}
         }
 
     }

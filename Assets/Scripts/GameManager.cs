@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 	List<Animal> animals = new List<Animal>();
 	List<Bush> bushes = new List<Bush> ();
 
-	public float runSpeed = 1.5f;
+	public float scrollSpeed = 1.5f;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour {
 		foreach (Animal a in animals) 
 		{
 			if (a.transform.position.x < -5) {
-                Debug.Log("deleted");
 				Destroy(a.gameObject);
 			}
 			else

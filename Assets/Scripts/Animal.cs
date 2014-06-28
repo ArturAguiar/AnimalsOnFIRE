@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Animal : MonoBehaviour 
+public class Animal : Flammable
 {
-	public bool onFire = false;
 	public float speedX = 3.5f;
 	public float speedZ = 5.0f;
 	public float initJumpSpeed = 1.0f;
@@ -16,8 +15,6 @@ public class Animal : MonoBehaviour
 	private bool onGround = true;
 	private Rigidbody body;
 	private SpriteRenderer spriteRenderer;
-	private ParticleEmitter innerFire;
-	private ParticleEmitter outerFire;
 
     private Ignite fireSensor;
 
@@ -26,8 +23,10 @@ public class Animal : MonoBehaviour
 	private float health;
 
 	// Use this for initialization
-	void Start () 
+	new void Start () 
 	{
+		base.Start();
+
 		health = initHealth;
 
 		body = this.GetComponent<Rigidbody>();
@@ -36,9 +35,6 @@ public class Animal : MonoBehaviour
 
 		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 		gameManager.AddAnimal (this);
-
-		innerFire = this.transform.Find("Fire/InnerCore").GetComponent<ParticleEmitter>();
-		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();
 
         fireSensor = this.GetComponentInChildren<Ignite>();
 	}
@@ -50,7 +46,7 @@ public class Animal : MonoBehaviour
 		{
 			// AI here?
 			spriteRenderer.color = Color.white;
-			this.transform.position = new Vector3(this.transform.position.x - gameManager.runSpeed * Time.deltaTime,
+			this.transform.position = new Vector3(this.transform.position.x - (gameManager.scrollSpeed - this.speedX / 6.0f) * Time.deltaTime,
 			                                      this.transform.position.y,
 			                                      this.transform.position.z);
 
@@ -60,7 +56,7 @@ public class Animal : MonoBehaviour
         fireSensor.onFire = onFire;
 
 		health -= burningRate * Time.deltaTime;
-		spriteRenderer.color = Color.Lerp (Color.white, Color.red, (initHealth - health) / initHealth);
+		spriteRenderer.color = Color.Lerp (Color.white, Color.black, (initHealth - health) / initHealth);
 
 		if (health <= 0.0f)
 		{
@@ -122,13 +118,6 @@ public class Animal : MonoBehaviour
 	void OnCollisionExit(Collision collisionInfo)
 	{
 		onGround = !collisionInfo.gameObject.CompareTag("Ground");
-	}
-
-	public void CatchFire()
-	{
-		innerFire.emit = true;
-		outerFire.emit = true;
-		onFire = true;
 	}
 
 	public void Die()
