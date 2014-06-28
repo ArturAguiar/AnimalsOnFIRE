@@ -6,7 +6,9 @@ public class Animal : MonoBehaviour
 	public bool onFire = false;
 	public float speedX = 3.5f;
 	public float speedZ = 5.0f;
+    public float runawayspeed = 1.3f;
 	public float initJumpSpeed = 1.0f;
+
 	public float boundaryUp = 2.5f;
 	public float boundaryDown = -2.5f;
 	public float burningRate = 3.0f;
@@ -19,7 +21,11 @@ public class Animal : MonoBehaviour
 	private ParticleEmitter innerFire;
 	private ParticleEmitter outerFire;
 
+    private bool startled = false;
+    private Vector2 danger;
+
     private Ignite fireSensor;
+    private Alert alertSensor;
 
 	private GameManager gameManager;
 
@@ -41,6 +47,7 @@ public class Animal : MonoBehaviour
 		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();
 
         fireSensor = this.GetComponentInChildren<Ignite>();
+        alertSensor = this.GetComponentInChildren<Alert>();
 	}
 	
 	// Update is called once per frame
@@ -49,10 +56,24 @@ public class Animal : MonoBehaviour
 		if (!onFire)
 		{
 			// AI here?
+            velocity.x = -gameManager.runSpeed * Time.deltaTime;
+            velocity.y = 0;
+            velocity.z = 0;
+
+            if (startled)
+            {
+                Vector2 position = new Vector2(this.transform.position.x, this.transform.position.z);
+                Vector2 direction = position - danger;
+                direction.Normalize();
+
+                velocity.x += runawayspeed*Time.deltaTime*direction.x;
+                velocity.z += runawayspeed * Time.deltaTime*direction.y;
+
+            }
 			spriteRenderer.color = Color.white;
-			this.transform.position = new Vector3(this.transform.position.x - gameManager.runSpeed * Time.deltaTime,
-			                                      this.transform.position.y,
-			                                      this.transform.position.z);
+			this.transform.position = new Vector3(this.transform.position.x + velocity.x,
+			                                      this.transform.position.y + velocity.y,
+			                                      this.transform.position.z + velocity.z);
 
 			return;
 		}
@@ -120,9 +141,15 @@ public class Animal : MonoBehaviour
 		outerFire.emit = true;
 		onFire = true;
 
-        Debug.Log("caught fire!");
         fireSensor.onFire = true;
+        alertSensor.onFire = true;
 	}
+
+    public void Startle(float x, float z)
+    {
+        startled = true;
+        danger = new Vector2(x, z);
+    }
 
 	public void Die()
 	{
