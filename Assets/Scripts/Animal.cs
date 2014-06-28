@@ -26,7 +26,7 @@ public class Animal : MonoBehaviour
 	private float health;
 
 	// Use this for initialization
-	void Start () 
+	protected virtual void Start () 
 	{
 		health = initHealth;
 
@@ -56,8 +56,6 @@ public class Animal : MonoBehaviour
 
 			return;
 		}
-
-        fireSensor.onFire = onFire;
 
 		health -= burningRate * Time.deltaTime;
 		spriteRenderer.color = Color.Lerp (Color.white, Color.red, (initHealth - health) / initHealth);
@@ -109,14 +107,6 @@ public class Animal : MonoBehaviour
 	void OnCollisionEnter(Collision collisionInfo)
 	{
 		onGround = collisionInfo.gameObject.CompareTag("Ground");
-
-		Animal collider = (Animal)collisionInfo.collider.GetComponent<Animal> ();
-		if (collider != null) 
-		{
-			if (collider.onFire) {
-				this.CatchFire();
-			}
-		}
 	}
 
 	void OnCollisionExit(Collision collisionInfo)
@@ -129,6 +119,9 @@ public class Animal : MonoBehaviour
 		innerFire.emit = true;
 		outerFire.emit = true;
 		onFire = true;
+
+        Debug.Log("caught fire!");
+        fireSensor.onFire = true;
 	}
 
 	public void Die()

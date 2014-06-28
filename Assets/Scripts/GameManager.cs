@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour {
 		foreach (Animal a in animals) 
 		{
 			if (a.transform.position.x < -5) {
-                Debug.Log("deleted");
 				Destroy(a.gameObject);
 			}
 			else

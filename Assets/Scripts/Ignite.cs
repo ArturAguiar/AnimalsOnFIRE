@@ -17,6 +17,7 @@ public class Ignite : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log(onFire);
         if (onFire)
         {
             Animal a = other.GetComponent<Animal>();
