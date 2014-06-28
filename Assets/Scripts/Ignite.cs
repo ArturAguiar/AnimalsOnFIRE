@@ -22,7 +22,7 @@ public class Ignite : MonoBehaviour {
             Animal a = other.GetComponent<Animal>();
             if (a != null)
             {
-                a.onFire = true;
+                a.CatchFire();
             }
 
             Bush b = other.GetComponent<Bush>();
