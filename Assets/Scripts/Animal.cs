@@ -76,4 +76,11 @@ public class Animal : MonoBehaviour
 		}
 
 	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+
+		//hello
+
+	}
 }
