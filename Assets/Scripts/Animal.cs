@@ -3,9 +3,6 @@ using System.Collections;
 
 public class Animal : MonoBehaviour 
 {
-
-	public float runSpeed = 2.0f;
-
 	public bool onFire = false;
 	public float speedX = 3.5f;
 	public float speedZ = 5.0f;
@@ -38,7 +35,7 @@ public class Animal : MonoBehaviour
 		{
 			// AI here?
 			spriteRenderer.color = Color.white;
-			this.transform.position = new Vector3(this.transform.position.x - runSpeed * Time.deltaTime,
+			this.transform.position = new Vector3(this.transform.position.x - gameManager.runSpeed * Time.deltaTime,
 			                                      this.transform.position.y,
 			                                      this.transform.position.z);
 
