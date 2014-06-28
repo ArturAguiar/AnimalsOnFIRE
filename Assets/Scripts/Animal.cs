@@ -12,24 +12,34 @@ public class Animal : MonoBehaviour
 	public float initJumpSpeed = 1.0f;
 	public float boundaryUp = 2.5f;
 	public float boundaryDown = -2.5f;
+	public float burningRate = 3.0f;
+	public float initHealth = 100.0f;
 
 	private Vector3 velocity;
 	private bool onGround = true;
 	private Rigidbody body;
-	//private SpriteRenderer spriteRenderer;
+	private SpriteRenderer spriteRenderer;
+	private ParticleEmitter innerFire;
+	private ParticleEmitter outerFire;
 
 	private GameManager gameManager;
+
+	private float health;
 
 	// Use this for initialization
 	void Start () 
 	{
+		health = initHealth;
+
 		body = this.GetComponent<Rigidbody>();
 		velocity = new Vector3(0.0f, 0.0f, 0.0f);
-		//spriteRenderer = this.GetComponent<SpriteRenderer>();
-		//spriteRenderer.color = Color.red;
+		spriteRenderer = this.GetComponent<SpriteRenderer>();
 
 		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 		gameManager.AddAnimal (this);
+
+		innerFire = this.transform.Find("Fire/InnerCore").GetComponent<ParticleEmitter>();
+		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();
 	}
 	
 	// Update is called once per frame
@@ -38,12 +48,20 @@ public class Animal : MonoBehaviour
 		if (!onFire)
 		{
 			// AI here?
-
+			spriteRenderer.color = Color.white;
 			this.transform.position = new Vector3(this.transform.position.x - runSpeed * Time.deltaTime,
 			                                      this.transform.position.y,
 			                                      this.transform.position.z);
 
 			return;
+		}
+
+		health -= burningRate * Time.deltaTime;
+		spriteRenderer.color = Color.Lerp (Color.white, Color.red, (initHealth - health) / initHealth);
+
+		if (health <= 0.0f)
+		{
+			Die();
 		}
 
 		if (Input.GetKey("right"))
@@ -63,6 +81,7 @@ public class Animal : MonoBehaviour
 		if (onGround && Input.GetKey("space"))
 		{
 			body.velocity = new Vector3(0.0f, initJumpSpeed, 0.0f);
+			onGround = false;
 		}
 
 		this.transform.position = new Vector3(this.transform.position.x + velocity.x,
@@ -87,10 +106,30 @@ public class Animal : MonoBehaviour
 	void OnCollisionEnter(Collision collisionInfo)
 	{
 		onGround = collisionInfo.gameObject.CompareTag("Ground");
+
+		Animal collider = (Animal)collisionInfo.collider.GetComponent<Animal> ();
+		if (collider != null) 
+		{
+			if (collider.onFire) {
+				this.CatchFire();
+			}
+		}
 	}
 
 	void OnCollisionExit(Collision collisionInfo)
 	{
 		onGround = !collisionInfo.gameObject.CompareTag("Ground");
+	}
+
+	public void CatchFire()
+	{
+		innerFire.emit = true;
+		outerFire.emit = true;
+		onFire = true;
+	}
+
+	public void Die()
+	{
+		gameManager.RemoveAnimal(this);
 	}
 }

@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		Animal firstAnimal = GameObject.FindWithTag("Player").GetComponent<Animal>();
+		firstAnimal.CatchFire();
 	}
 	
 	// Update is called once per frame
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour {
 	
 		List<Animal> newanimals = new List<Animal> ();
 
-		Debug.Log (animals.Count);
+		//Debug.Log (animals.Count);
 		foreach (Animal a in animals) 
 		{
 			if (a.transform.position.x < -5) {
@@ -33,5 +34,11 @@ public class GameManager : MonoBehaviour {
 	public void AddAnimal (Animal a)
 	{
 		animals.Add (a);
+	}
+
+	public void RemoveAnimal (Animal a)
+	{
+		Destroy(a.gameObject);
+		animals.Remove (a);
 	}
 }
