@@ -10,8 +10,8 @@ public class Animal : MonoBehaviour
 	public float speedX = 3.5f;
 	public float speedZ = 5.0f;
 	public float initJumpSpeed = 1.0f;
-	public float boundaryUp = 2.15f;
-	public float boundaryDown = -2.15f;
+	public float boundaryUp = 2.5f;
+	public float boundaryDown = -2.5f;
 
 	private Vector3 velocity;
 	private bool onGround = true;
