@@ -7,8 +7,7 @@ public class BlastTrigger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-        parent = this.GetComponentInParent<Bomb>();
+		parent = this.transform.parent.GetComponent<Bomb>();
 	}
 	
 	// Update is called once per frame

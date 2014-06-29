@@ -26,7 +26,7 @@ public class Bomb : Flammable {
                                       this.transform.position.y,
                                       this.transform.position.z);
 
-        if (onFire && fireLength == 0)
+        if (state == State.BURNING && fireLength == 0)
         {
             foreach (Animal a in animals)
             {
@@ -35,7 +35,7 @@ public class Bomb : Flammable {
             fireLength++;
         }
 
-        if (onFire)
+		if (state == State.BURNING)
         {
             fireLength++;
         }
@@ -49,10 +49,10 @@ public class Bomb : Flammable {
 
     public override void CatchFire()
     {
-        if(!onFire)
+		if(state != State.BURNING)
             explosion = (GameObject) Instantiate(explosion, this.transform.position, new Quaternion());
 
-        onFire = true;
+		state = State.BURNING;
     }
 
     public override void Startle(float x, float z)
