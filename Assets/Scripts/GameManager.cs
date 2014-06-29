@@ -9,10 +9,14 @@ public class GameManager : MonoBehaviour {
 
 	public float scrollSpeed;
 
+    public int score;
+
 	// Use this for initialization
 	void Start () {
 		Animal firstAnimal = GameObject.FindWithTag("Player").GetComponent<Animal>();
 		firstAnimal.CatchFire();
+
+        score = 0;
 	}
 	
 	// Update is called once per frame
@@ -47,6 +51,12 @@ public class GameManager : MonoBehaviour {
 		bushes = newbushes;
 	}
 
+
+    void OnGUI()
+    {
+         GUI.TextArea(new Rect(10, 10, 50, 20), "" + score);
+    }
+
 	public void AddAnimal (Animal a)
 	{
 		animals.Add (a);
@@ -62,4 +72,9 @@ public class GameManager : MonoBehaviour {
 	{
 		bushes.Add (b);
 	}
+
+    public void IncrementScore()
+    {
+        score++;
+    }
 }

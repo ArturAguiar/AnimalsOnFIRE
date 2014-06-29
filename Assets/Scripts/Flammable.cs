@@ -10,6 +10,8 @@ public class Flammable : MonoBehaviour
 	private Light fireLight;
 	private AudioSource scream;
 
+    private GameManager gameManager;
+
 	protected bool startled = false;
 	protected Vector2 danger;
 
@@ -21,6 +23,7 @@ public class Flammable : MonoBehaviour
 		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();
 		fireLight = this.transform.Find ("Fire/Lightsource").GetComponent<Light>();
 		scream = this.GetComponentInChildren<AudioSource>();
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 	}
 	
 	// Update is called once per frame
@@ -37,11 +40,18 @@ public class Flammable : MonoBehaviour
 	
 	public void CatchFire()
 	{
-		if (!onFire && scream != null)
-			scream.Play();
+		if (!onFire)
+        {
+            if(scream != null)
+                scream.Play();
 
-		if (animator)
-			animator.Play("Burning");
+            gameManager.IncrementScore();            
+        }
+
+        if (animator)
+        {
+            animator.Play("Burning");
+        }
 
 		innerFire.emit = true;
 		outerFire.emit = true;

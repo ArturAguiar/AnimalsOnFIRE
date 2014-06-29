@@ -88,7 +88,7 @@ public class Animal : Flammable
 		health -= burningRate * Time.deltaTime;
 		spriteRenderer.color = Color.Lerp (Color.white, Color.black, (initHealth - health) / initHealth);
 
-		if (health <= 0.0f)
+		if (health <= 0.0f || this.transform.position.y < -10)
 		{
 			Die();
 		}

@@ -8,8 +8,6 @@ public class Deer : Animal {
 	
         base.Start();
 
-        Debug.Log("extended!");
-
         //initJumpSpeed = 1.0f;
 	    initHealth = 500.0f;
 	}
