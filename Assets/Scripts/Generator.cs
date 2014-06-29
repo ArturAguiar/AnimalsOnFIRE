@@ -29,7 +29,7 @@ public class Generator : MonoBehaviour {
 		if (squirrel_wait > SQUIRREL_INTERVAL) 
 		{
 			squirrel_wait = 0;
-			Animal newsquirrel = (Animal)Instantiate (squirrel, new Vector3 (3, 1, 5*Random.value - 2.5f), new Quaternion ());
+			Animal newsquirrel = (Animal)Instantiate (squirrel, new Vector3 (3, 1, 5 * Random.value - 2.5f), new Quaternion ());
 			newsquirrel.onFire = false;
 		}
 
@@ -37,7 +37,7 @@ public class Generator : MonoBehaviour {
 		if (bush_wait > BUSH_INTERVAL) 
 		{
 			bush_wait = 0;
-			Bush newbush = (Bush)Instantiate (bush, new Vector3 (3, 1, 5*Random.value - 2.5f), new Quaternion ());
+			Bush newbush = (Bush)Instantiate (bush, new Vector3 (3, 1, 5 * Random.value - 2.5f), new Quaternion ());
 			newbush.onFire = false;
 		}
 

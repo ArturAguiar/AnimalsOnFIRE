@@ -10,6 +10,9 @@ public class Flammable : MonoBehaviour
 	private Light fireLight;
 	private AudioSource scream;
 
+	protected bool startled = false;
+	protected Vector2 danger;
+
 	// Use this for initialization
 	protected virtual void Start () 
 	{
@@ -23,18 +26,26 @@ public class Flammable : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 	
-	}	
+	}
+
+	public void Startle(float x, float z)
+	{
+		startled = true;
+		danger = new Vector2(x, z);
+		animator.Play("Startled");
+	}
 	
 	public void CatchFire()
 	{
 		if (!onFire && scream != null)
 			scream.Play();
 
+		if (animator)
+			animator.Play("Burning");
+
 		innerFire.emit = true;
 		outerFire.emit = true;
 		fireLight.range = 1.2f;
 		onFire = true;
-
-		animator.Play("Burning");
 	}
 }

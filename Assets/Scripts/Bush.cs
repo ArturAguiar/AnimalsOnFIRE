@@ -18,16 +18,10 @@ public class Bush : Flammable
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-		if (onFire) 
-		{
-			//spriteRenderer.color = Color.red;
-		}
-		else
-		{
-			spriteRenderer.color = Color.white;
-		}
+	void Update () 
+	{
+		if (onFire)
+			spriteRenderer.color = Color.gray;
 
 		this.transform.position = new Vector3(this.transform.position.x - gameManager.scrollSpeed * Time.deltaTime,
 		                                      this.transform.position.y,

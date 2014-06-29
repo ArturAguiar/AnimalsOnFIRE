@@ -16,14 +16,14 @@ public class Alert : MonoBehaviour {
 	
 	}
 
-    void OnTriggerEnter(Collider other)
+	void OnTriggerEnter(Collider other)
     {
         if (parent != null && parent.onFire)
         {
-			Animal a = other.GetComponent<Animal>();
-			if (a != null)
+			Flammable thing = other.GetComponent<Flammable>();
+			if (thing != null)
 			{
-				a.Startle(this.transform.position.x, this.transform.position.z);
+				thing.Startle(this.transform.position.x, this.transform.position.z);
 			}
         }
     }

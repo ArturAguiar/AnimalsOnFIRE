@@ -17,9 +17,7 @@ public class Animal : Flammable
 	private bool onGround = true;
 	private Rigidbody body;
 	private SpriteRenderer spriteRenderer;
-
-    private bool startled = false;
-    private Vector2 danger;
+    
 
 	private GameManager gameManager;
 
@@ -43,6 +41,23 @@ public class Animal : Flammable
 	// Update is called once per frame
 	void Update () 
 	{
+		this.transform.position = new Vector3(this.transform.position.x + velocity.x,
+		                                      this.transform.position.y + velocity.y,
+		                                      this.transform.position.z + velocity.z);
+		
+		if (this.transform.position.z > boundaryUp)
+		{
+			this.transform.position = new Vector3(this.transform.position.x,
+			                                      this.transform.position.y,
+			                                      boundaryUp);
+		}
+		else if (this.transform.position.z < boundaryDown)
+		{
+			this.transform.position = new Vector3(this.transform.position.x,
+			                                      this.transform.position.y,
+			                                      boundaryDown);
+		}
+
 		if (!onFire)
 		{
 			// AI here?
@@ -95,24 +110,6 @@ public class Animal : Flammable
 			body.velocity = new Vector3(0.0f, initJumpSpeed, 0.0f);
 			onGround = false;
 		}
-
-		this.transform.position = new Vector3(this.transform.position.x + velocity.x,
-				                              this.transform.position.y + velocity.y,
-				                              this.transform.position.z + velocity.z);
-		
-		if (this.transform.position.z > boundaryUp)
-		{
-			this.transform.position = new Vector3(this.transform.position.x,
-			                                      this.transform.position.y,
-			                                      boundaryUp);
-		}
-		else if (this.transform.position.z < boundaryDown)
-		{
-			this.transform.position = new Vector3(this.transform.position.x,
-			                                      this.transform.position.y,
-			                                      boundaryDown);
-		}
-
 	}
 
 	void OnCollisionEnter(Collision collisionInfo)
@@ -124,12 +121,6 @@ public class Animal : Flammable
 	{
 		onGround = !collisionInfo.gameObject.CompareTag("Ground");
 	}
-
-    public void Startle(float x, float z)
-    {
-        startled = true;
-        danger = new Vector2(x, z);
-    }
 
 	public void Die()
 	{
