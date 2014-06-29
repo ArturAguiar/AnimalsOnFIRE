@@ -181,6 +181,10 @@ public class MeshBuilder {
 		vertices.Add (v3);
 		triangles.Add (vertices.Count);
 		vertices.Add (v2);
+		//cruddy tex coords. oh well
+		texCoords.Add (new Vector2 (0, 0));
+		texCoords.Add (new Vector2 (1, 0.5f));
+		texCoords.Add (new Vector2 (0, 1));
 	}
 	
 	public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
@@ -195,6 +199,10 @@ public class MeshBuilder {
 		vertices.Add (v2);
 		vertices.Add (v3);
 		vertices.Add (v4);
+		texCoords.Add (new Vector2 (0, 0));
+		texCoords.Add (new Vector2 (1, 0));
+		texCoords.Add (new Vector2 (1, 1));
+		texCoords.Add (new Vector2 (0, 1));
 	}
 
 	public Mesh CreateMesh()
@@ -202,6 +210,7 @@ public class MeshBuilder {
 		Mesh m = new Mesh ();
 		m.vertices = vertices.ToArray ();
 		m.triangles = triangles.ToArray ();
+		m.uv = texCoords.ToArray ();
 		m.RecalculateNormals();
 		m.RecalculateBounds();
 		m.Optimize();
@@ -223,6 +232,8 @@ public class GroundLaneManager : MonoBehaviour {
 	public int GenerationInterval;
 	public int BlocksPerUnit;
 	public GroundMesh MeshPrefab;
+	public float minZ;
+	public float maxZ;
 	TileMarkovChain markov;
 	LaneManager lm;
 	int time;
@@ -234,7 +245,7 @@ public class GroundLaneManager : MonoBehaviour {
 		lm = new LaneManager(markov, NumLanes, 10, MaxHeight);
 		destructionQueue = new LinkedList<GroundMesh> ();
 		for (int i = 0; i < RunwayLength * BlocksPerUnit; i++)
-			GenerateNewRow (-RunwayLength + (float)i / BlocksPerUnit);
+			GenerateNewRow (-RunwayLength + (float)(i + 1) / BlocksPerUnit);
 	}
 
 	private void GenerateNewRow(float offset)
@@ -243,8 +254,8 @@ public class GroundLaneManager : MonoBehaviour {
 			lm.GenerateNewRow();
 		for (int i = 0; i < NumLanes; i++) {
 			GroundMesh g = (GroundMesh)Instantiate (MeshPrefab);
-			g.transform.position = new Vector3(10 + offset, -2, -5);
-			g.transform.localScale = new Vector3(1, 1, 5) / BlocksPerUnit;
+			g.transform.position = new Vector3(10 + offset, 0, minZ);
+			g.transform.localScale = new Vector3(1, 0.5f, (maxZ - minZ) / NumLanes * BlocksPerUnit) / BlocksPerUnit;
 			g.LifeSpan = GenerationInterval * RunwayLength * BlocksPerUnit;
 			g.ScrollRate = 1f / GenerationInterval / BlocksPerUnit;
 			g.transform.parent = this.transform;

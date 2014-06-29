@@ -93,10 +93,10 @@ public static class TileBuilder {
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 3), tileBuilder.GetVertex (count - 4), b4, b3);
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 4), tileBuilder.GetVertex (count - 1), b1, b4);
 		Mesh tile = tileBuilder.CreateMesh ();
-		Vector2[] uv = new Vector2[tile.vertices.Length];
-		for (int i = 0; i < uv.Length; i++)
-			uv [i] = new Vector2 (0, 0);
-		tile.uv = uv;
+		//Vector2[] uv = new Vector2[tile.vertices.Length];
+		//for (int i = 0; i < uv.Length; i++)
+		//	uv [i] = new Vector2 (0, 0);
+		//tile.uv = uv;
 		return tile;
 	}
 }

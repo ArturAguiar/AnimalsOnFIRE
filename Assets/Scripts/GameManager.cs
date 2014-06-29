@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 	List<Animal> animals = new List<Animal>();
 	List<Bush> bushes = new List<Bush> ();
 
-	public float scrollSpeed = 1.5f;
+	public float scrollSpeed;
 
 	// Use this for initialization
 	void Start () {

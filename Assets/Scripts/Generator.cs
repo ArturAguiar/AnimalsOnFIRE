@@ -7,7 +7,7 @@ public class Generator : MonoBehaviour {
     public Deer deer;
 	public Bush bush;
 
-	private const int SQUIRREL_INTERVAL = 160;
+	private const int SQUIRREL_INTERVAL = 20;
 	private int squirrel_wait = 0;
 
 	private const int BUSH_INTERVAL = 60;
@@ -29,7 +29,7 @@ public class Generator : MonoBehaviour {
 		if (squirrel_wait > SQUIRREL_INTERVAL) 
 		{
 			squirrel_wait = 0;
-			Animal newsquirrel = (Animal)Instantiate (squirrel, new Vector3 (3, 1, 5 * Random.value - 2.5f), new Quaternion ());
+			Animal newsquirrel = (Animal)Instantiate (squirrel, new Vector3 (10, 1, 5 * Random.value - 2.5f), new Quaternion ());
 			newsquirrel.onFire = false;
 		}
 
@@ -37,7 +37,7 @@ public class Generator : MonoBehaviour {
 		if (bush_wait > BUSH_INTERVAL) 
 		{
 			bush_wait = 0;
-			Bush newbush = (Bush)Instantiate (bush, new Vector3 (3, 1, 5 * Random.value - 2.5f), new Quaternion ());
+			Bush newbush = (Bush)Instantiate (bush, new Vector3 (10, 1, 5 * Random.value - 2.5f), new Quaternion ());
 			newbush.onFire = false;
 		}
 
@@ -45,7 +45,7 @@ public class Generator : MonoBehaviour {
         if (deer_wait > DEER_INTERVAL)
         {
             deer_wait = 0;
-            Deer newdeer = (Deer)Instantiate(deer, new Vector3(3, 1, 5 * Random.value - 2.5f), new Quaternion());
+            Deer newdeer = (Deer)Instantiate(deer, new Vector3(10, 1, 5 * Random.value - 2.5f), new Quaternion());
             newdeer.onFire = false;
         }
 
