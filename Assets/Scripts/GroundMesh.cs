@@ -84,10 +84,10 @@ public static class TileBuilder {
 		}
 		//build base
 		int count = tileBuilder.NumVertices;
-		Vector3 b1 = tileBuilder.GetVertex (count - 1); b1.y = 0;
-		Vector3 b2 = tileBuilder.GetVertex (count - 2); b2.y = 0;
-		Vector3 b3 = tileBuilder.GetVertex (count - 3); b3.y = 0;
-		Vector3 b4 = tileBuilder.GetVertex (count - 4); b4.y = 0;
+		Vector3 b1 = tileBuilder.GetVertex (count - 1); b1.y = -1;
+		Vector3 b2 = tileBuilder.GetVertex (count - 2); b2.y = -1;
+		Vector3 b3 = tileBuilder.GetVertex (count - 3); b3.y = -1;
+		Vector3 b4 = tileBuilder.GetVertex (count - 4); b4.y = -1;
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 1), tileBuilder.GetVertex (count - 2), b2, b1);
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 2), tileBuilder.GetVertex (count - 3), b3, b2);
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 3), tileBuilder.GetVertex (count - 4), b4, b3);

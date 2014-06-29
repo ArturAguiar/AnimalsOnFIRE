@@ -18,13 +18,11 @@ public class Ignite : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (parent != null && parent.onFire)
+		if (parent != null && parent.state == Flammable.State.BURNING)
         {
-			Debug.Log("triggered!");
 			Flammable thing = other.GetComponent<Flammable>();
 			if (thing != null)
 			{
-				Debug.Log("burn!");
 				thing.CatchFire();
 			}
         }
