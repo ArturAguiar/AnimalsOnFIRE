@@ -24,7 +24,7 @@ public class TileMarkovChain
 		this.maxHeight = maxHeight;
 	}
 	
-	public TileTypes NextType(TileTypes tileType, int height)
+	public TileTypes NextType(TileTypes tileType, int selfHeight, int leftHeight, int rightHeight)
 	{
 		float factor = Random.value;//(float)random.NextDouble();
 		int baseIndex = enumSize * (int)tileType;
@@ -37,8 +37,8 @@ public class TileMarkovChain
 		}
 		else
 			factor -= data[baseIndex + i];
-		int candidateMod = TileHeightMod(ret) + height;
-		if (candidateMod < 0 || candidateMod > maxHeight)
+		int candidateMod = TileHeightMod(ret) + selfHeight;
+		if (candidateMod < 0 || candidateMod > maxHeight || candidateMod > leftHeight)
 			return (TileTypes)0;
 		return ret;
 	}
@@ -130,12 +130,15 @@ class LaneManager
 		else
 			for (int i = 0; i < current.Length; i++)
 		{
-			current[i].TileType = tmc.NextType(previous[i].TileType, previous[i].Height);
+			int leftHeight = previous[(i + current.Length - 1) % current.Length].Height;
+			if (i == 0) leftHeight = maxHeight;
+			int rightHeight = previous[(i + 1) % current.Length].Height;
+			current[i].TileType = tmc.NextType(previous[i].TileType, previous[i].Height, leftHeight, rightHeight);
 			current[i].Height = previous[i].Height + TileMarkovChain.TileHeightMod(current[i].TileType);
 		}
 		nodes++;
 	}
-	
+		
 	public LaneNode GetLaneNode(int laneID)
 	{
 		return current[laneID];
@@ -159,7 +162,6 @@ class LaneManager
 		return s;
 	}
 }
-
 
 public class MeshBuilder {
 	List<Vector3> vertices;
@@ -263,6 +265,7 @@ public class GroundLaneManager : MonoBehaviour {
 			g.TileType = ln.TileType;
 			g.Lane = i;
 			g.Height = ln.Height;
+			g.renderer.material.mainTextureOffset = new Vector2((float)g.Height / (MaxHeight + 1), 0);
 			g.GenerateMesh();
 			destructionQueue.AddLast (g);
 			//set tile type
