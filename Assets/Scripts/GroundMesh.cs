@@ -116,9 +116,13 @@ public class GroundMesh : MonoBehaviour {
 
 	public void GenerateMesh() {
 		filter = GetComponent<MeshFilter>();
-		//m = TileBuilder.BuildTile (TileType, Lane, Height);
+		Mesh m = TileBuilder.BuildTile (TileType, Lane, Height);
+		Color[] colors = new Color[m.vertices.Length];
+		//for (int i = 0; i < colors.Length; i++)
+		//	colors [i].r = colors [i].g = colors [i].b = 1 - Lane / 10f;
+		//m.colors = colors;
 		if (filter != null)
-			filter.mesh = TileBuilder.BuildTile (TileType, Lane, Height);
+			filter.mesh = m;
 		GetComponent<MeshCollider> ().sharedMesh = filter.mesh;
 	}
 	
