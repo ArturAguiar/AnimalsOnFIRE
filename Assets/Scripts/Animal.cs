@@ -18,9 +18,8 @@ public class Animal : Flammable
 	private Rigidbody body;
 	private SpriteRenderer spriteRenderer;
 	private float perturbation = 0.025f;
-	private GameManager gameManager;
 	
-	private float health;
+	public float health;
 	
 	// Use this for initialization
 	protected override void Start ()

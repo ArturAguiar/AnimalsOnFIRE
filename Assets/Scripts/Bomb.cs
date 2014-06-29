@@ -1,0 +1,62 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class Bomb : Flammable {
+
+    private int fireLength = 0;
+    private const int damage = 50;
+    private const int explosionTime = 20;
+
+    public GameObject explosion;
+
+    public List<Animal> animals;
+
+	// Use this for initialization
+	void Start () {
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+
+        animals = new List<Animal>();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+
+        this.transform.position = new Vector3(this.transform.position.x - gameManager.scrollSpeed * Time.deltaTime,
+                                      this.transform.position.y,
+                                      this.transform.position.z);
+
+        if (onFire && fireLength == 0)
+        {
+            foreach (Animal a in animals)
+            {
+                a.health -= damage;
+            }
+            fireLength++;
+        }
+
+        if (onFire)
+        {
+            fireLength++;
+        }
+
+        if (fireLength > explosionTime || this.transform.position.x < -5)
+        {
+            Destroy(explosion);
+            Destroy(this.gameObject);
+        }
+	}
+
+    public override void CatchFire()
+    {
+        if(!onFire)
+            explosion = (GameObject) Instantiate(explosion, this.transform.position, new Quaternion());
+
+        onFire = true;
+    }
+
+    public override void Startle(float x, float z)
+    {
+        return;
+    }
+}

@@ -6,6 +6,7 @@ public class Generator : MonoBehaviour {
 	public Animal squirrel;
     public Deer deer;
 	public Bush bush;
+    public Bomb bomb;
 
 	private const int SQUIRREL_INTERVAL = 20;
 	private int squirrel_wait = 0;
@@ -15,6 +16,9 @@ public class Generator : MonoBehaviour {
 
     private const int DEER_INTERVAL = 400;
     private int deer_wait = 350;
+
+    private const int BOMB_INTERVAL = 80;
+    private int bomb_wait = 50;
 
 	// Use this for initialization
 	void Start () 
@@ -49,6 +53,13 @@ public class Generator : MonoBehaviour {
             newdeer.onFire = false;
         }
 
+        bomb_wait++;
+        if (bomb_wait > BOMB_INTERVAL)
+        {
+            bomb_wait = 0;
+            Bomb newbomb = (Bomb)Instantiate(bomb, new Vector3(10, 1, 5 * Random.value - 2.5f), new Quaternion());
+            newbomb.onFire = false;
+        }
 
 	}
 }

@@ -10,7 +10,7 @@ public class Flammable : MonoBehaviour
 	private Light fireLight;
 	private AudioSource scream;
 
-    private GameManager gameManager;
+    protected GameManager gameManager;
 
 	protected bool startled = false;
 	protected Vector2 danger;
@@ -31,14 +31,14 @@ public class Flammable : MonoBehaviour
 	
 	}
 
-	public void Startle(float x, float z)
+	public virtual void Startle(float x, float z)
 	{
 		startled = true;
 		danger = new Vector2(x, z);
 		animator.Play("Startled");
 	}
 	
-	public void CatchFire()
+	public virtual void CatchFire()
 	{
 		if (!onFire)
         {

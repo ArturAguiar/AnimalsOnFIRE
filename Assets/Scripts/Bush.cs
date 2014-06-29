@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bush : Flammable 
 {
-	private GameManager gameManager;
+
 	private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
