@@ -57,7 +57,7 @@ public class Animal : Flammable
 		
 		if (state != State.BURNING)
 		{
-			// AI here?
+			// AI here
 			velocity.x = -gameManager.scrollSpeed * Time.deltaTime;
 			velocity.y = 0;
 			velocity.z = 0;
