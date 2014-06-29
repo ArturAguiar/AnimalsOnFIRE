@@ -33,15 +33,4 @@ public class Bush : Flammable
 		                                      this.transform.position.y,
 		                                      this.transform.position.z);
 	}
-
-	void OnTrigger(Collider c)
-	{
-		Animal collider = (Animal)c.gameObject.GetComponent<Animal> ();
-		if (collider != null) 
-		{
-			if (collider.onFire) {
-				this.CatchFire();
-			}
-		}
-	}
 }

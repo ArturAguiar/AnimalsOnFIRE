@@ -5,7 +5,9 @@ public class Animal : Flammable
 {
 	public float speedX = 3.5f;
 	public float speedZ = 5.0f;
+    public float runawayspeed = 1.3f;
 	public float initJumpSpeed = 1.0f;
+
 	public float boundaryUp = 2.5f;
 	public float boundaryDown = -2.5f;
 	public float burningRate = 3.0f;
@@ -16,14 +18,15 @@ public class Animal : Flammable
 	private Rigidbody body;
 	private SpriteRenderer spriteRenderer;
 
-    private Ignite fireSensor;
+    private bool startled = false;
+    private Vector2 danger;
 
 	private GameManager gameManager;
 
 	private float health;
 
 	// Use this for initialization
-	new void Start () 
+	protected override void Start ()
 	{
 		base.Start();
 
@@ -35,8 +38,6 @@ public class Animal : Flammable
 
 		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 		gameManager.AddAnimal (this);
-
-        fireSensor = this.GetComponentInChildren<Ignite>();
 	}
 	
 	// Update is called once per frame
@@ -45,15 +46,27 @@ public class Animal : Flammable
 		if (!onFire)
 		{
 			// AI here?
+            velocity.x = -gameManager.scrollSpeed * Time.deltaTime;
+            velocity.y = 0;
+            velocity.z = 0;
+
+            if (startled)
+            {
+                Vector2 position = new Vector2(this.transform.position.x, this.transform.position.z);
+                Vector2 direction = position - danger;
+                direction.Normalize();
+
+                velocity.x += runawayspeed*Time.deltaTime*direction.x;
+                velocity.z += runawayspeed * Time.deltaTime*direction.y;
+
+            }
 			spriteRenderer.color = Color.white;
-			this.transform.position = new Vector3(this.transform.position.x - (gameManager.scrollSpeed - this.speedX / 6.0f) * Time.deltaTime,
-			                                      this.transform.position.y,
-			                                      this.transform.position.z);
+			this.transform.position = new Vector3(this.transform.position.x + velocity.x,
+			                                      this.transform.position.y + velocity.y,
+			                                      this.transform.position.z + velocity.z);
 
 			return;
 		}
-
-        fireSensor.onFire = onFire;
 
 		health -= burningRate * Time.deltaTime;
 		spriteRenderer.color = Color.Lerp (Color.white, Color.black, (initHealth - health) / initHealth);
@@ -105,20 +118,18 @@ public class Animal : Flammable
 	void OnCollisionEnter(Collision collisionInfo)
 	{
 		onGround = collisionInfo.gameObject.CompareTag("Ground");
-
-		Animal collider = (Animal)collisionInfo.collider.GetComponent<Animal> ();
-		if (collider != null) 
-		{
-			if (collider.onFire) {
-				this.CatchFire();
-			}
-		}
 	}
 
 	void OnCollisionExit(Collision collisionInfo)
 	{
 		onGround = !collisionInfo.gameObject.CompareTag("Ground");
 	}
+
+    public void Startle(float x, float z)
+    {
+        startled = true;
+        danger = new Vector2(x, z);
+    }
 
 	public void Die()
 	{

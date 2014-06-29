@@ -11,7 +11,8 @@ public class Flammable : MonoBehaviour
 	private AudioSource scream;
 
 	// Use this for initialization
-	protected void Start () {		
+	protected virtual void Start () 
+	{
 		animator = this.GetComponent<Animator>();
 		innerFire = this.transform.Find("Fire/InnerCore").GetComponent<ParticleEmitter>();
 		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();

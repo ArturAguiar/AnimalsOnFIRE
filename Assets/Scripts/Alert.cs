@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ignite : MonoBehaviour 
-{
-	private Flammable parent;
+public class Alert : MonoBehaviour {
 
+	private Flammable parent;
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -20,12 +20,11 @@ public class Ignite : MonoBehaviour
     {
         if (parent != null && parent.onFire)
         {
-			Flammable thing = other.GetComponent<Flammable>();
-			if (thing != null)
+			Animal a = other.GetComponent<Animal>();
+			if (a != null)
 			{
-				thing.CatchFire();
+				a.Startle(this.transform.position.x, this.transform.position.z);
 			}
         }
-
     }
 }
