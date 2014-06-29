@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 7a46e5842a3989d45bd79abdfd228212
+=======
+guid: 162595aeb8f159f43a52d5f3d219f9c7
+>>>>>>> d1bc75a70d29fa5dda65dd9e431fe2a7c982bd08
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -33,7 +37,11 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
+<<<<<<< HEAD
   alignment: 0
+=======
+  alignment: 7
+>>>>>>> d1bc75a70d29fa5dda65dd9e431fe2a7c982bd08
   spritePivot: {x: .5, y: .5}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
