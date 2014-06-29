@@ -3,12 +3,8 @@ using System.Collections;
 
 public class Bush : Flammable 
 {
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 	private SpriteRenderer spriteRenderer;
-
 
 	// Use this for initialization
 	new void Start () 
