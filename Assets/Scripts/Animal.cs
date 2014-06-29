@@ -62,7 +62,7 @@ public class Animal : Flammable
 			velocity.y = 0;
 			velocity.z = 0;
 			
-			if (startled)
+			if (state == State.STARTLED)
 			{
 				Vector2 position = new Vector2(this.transform.position.x, this.transform.position.z);
 				Vector2 direction = position - danger;
