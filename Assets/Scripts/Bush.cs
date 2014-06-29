@@ -3,8 +3,12 @@ using System.Collections;
 
 public class Bush : Flammable 
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	private SpriteRenderer spriteRenderer;
+
 
 	// Use this for initialization
 	new void Start () 
@@ -20,7 +24,7 @@ public class Bush : Flammable
 	// Update is called once per frame
 	void Update () 
 	{
-		if (onFire)
+		if (state == State.BURNING)
 			spriteRenderer.color = Color.gray;
 
 		this.transform.position = new Vector3(this.transform.position.x - gameManager.scrollSpeed * Time.deltaTime,

@@ -31,8 +31,7 @@ public class Animal : Flammable
 		body = this.GetComponent<Rigidbody>();
 		velocity = new Vector3(0.0f, 0.0f, 0.0f);
 		spriteRenderer = this.GetComponent<SpriteRenderer>();
-		
-		gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+
 		gameManager.AddAnimal (this);
 	}
 	
@@ -56,9 +55,9 @@ public class Animal : Flammable
 			                                      boundaryDown);
 		}
 		
-		if (!onFire)
+		if (state != State.BURNING)
 		{
-			// AI here?
+			// AI here
 			velocity.x = -gameManager.scrollSpeed * Time.deltaTime;
 			velocity.y = 0;
 			velocity.z = 0;

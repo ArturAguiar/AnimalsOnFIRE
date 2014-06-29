@@ -3,7 +3,16 @@ using System.Collections;
 
 public class Flammable : MonoBehaviour 
 {	
-	public bool onFire = false;
+	public enum State 
+	{
+		IDLE,
+		STARTLED,
+		BURNING
+	}
+
+	public State state = State.IDLE;
+
+	//public bool onFire = false;
 	private ParticleEmitter innerFire;
 	private ParticleEmitter outerFire;
 	private Animator animator;
@@ -27,35 +36,39 @@ public class Flammable : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 	
 	}
 
 	public virtual void Startle(float x, float z)
 	{
-		startled = true;
-		danger = new Vector2(x, z);
-		animator.Play("Startled");
+		if (state == State.IDLE)
+		{
+			startled = true;
+			danger = new Vector2(x, z);
+			animator.Play("Startled");
+		}
 	}
 	
 	public virtual void CatchFire()
 	{
-		if (!onFire)
-        {
-            if(scream != null)
-                scream.Play();
+		if (state == State.BURNING)
+			return; // already on fire.
 
-            gameManager.IncrementScore();            
-        }
+	    if(scream != null)
+	        scream.Play();
 
-        if (animator)
-        {
-            animator.Play("Burning");
-        }
+	    gameManager.IncrementScore();                   
 
 		innerFire.emit = true;
 		outerFire.emit = true;
 		fireLight.range = 1.2f;
-		onFire = true;
+		state = State.BURNING;
+
+		if (animator)
+		{
+			animator.Play("Burning");
+		}
 	}
 }

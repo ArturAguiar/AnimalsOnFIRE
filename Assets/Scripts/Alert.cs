@@ -18,7 +18,7 @@ public class Alert : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
     {
-        if (parent != null && parent.onFire)
+		if (parent != null && parent.state == Flammable.State.BURNING)
         {
 			Flammable thing = other.GetComponent<Flammable>();
 			if (thing != null)
