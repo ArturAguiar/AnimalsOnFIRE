@@ -11,17 +11,16 @@ public class Flammable : MonoBehaviour
 	}
 
 	public State state = State.IDLE;
+	public AudioSource[] startleSounds;
+	public AudioSource[] igniteSounds;
 
-	//public bool onFire = false;
 	private ParticleEmitter innerFire;
 	private ParticleEmitter outerFire;
 	private Animator animator;
 	private Light fireLight;
-	private AudioSource scream;
 
     protected GameManager gameManager;
 
-	protected bool startled = false;
 	protected Vector2 danger;
 
 	// Use this for initialization
@@ -31,7 +30,6 @@ public class Flammable : MonoBehaviour
 		innerFire = this.transform.Find("Fire/InnerCore").GetComponent<ParticleEmitter>();
 		outerFire = this.transform.Find("Fire/OuterCore").GetComponent<ParticleEmitter>();
 		fireLight = this.transform.Find ("Fire/Lightsource").GetComponent<Light>();
-		scream = this.GetComponentInChildren<AudioSource>();
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 	}
 	
@@ -45,9 +43,14 @@ public class Flammable : MonoBehaviour
 	{
 		if (state == State.IDLE)
 		{
-			startled = true;
+			state = State.STARTLED;
 			danger = new Vector2(x, z);
-			animator.Play("Startled");
+
+			if (animator)
+				animator.Play("Startled");
+
+			if (startleSounds.Length > 0 && Random.Range(0, 100) < 60)
+				Instantiate(startleSounds[Random.Range(0, startleSounds.Length - 1)], this.transform.position, new Quaternion());
 		}
 	}
 	
@@ -56,10 +59,10 @@ public class Flammable : MonoBehaviour
 		if (state == State.BURNING)
 			return; // already on fire.
 
-	    if(scream != null)
-	        scream.Play();
-
-	    gameManager.IncrementScore();                   
+		if (igniteSounds.Length > 0 && Random.Range(0, 100) < 60)
+			Instantiate(igniteSounds[Random.Range(0, igniteSounds.Length - 1)], this.transform.position, new Quaternion());
+		
+		gameManager.IncrementScore();                   
 
 		innerFire.emit = true;
 		outerFire.emit = true;
