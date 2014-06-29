@@ -17,6 +17,8 @@ public class Animal : Flammable
 	private bool onGround = true;
 	private Rigidbody body;
 	private SpriteRenderer spriteRenderer;
+
+    private float perturbation = 0.025f;
     
 
 	private GameManager gameManager;
@@ -104,6 +106,9 @@ public class Animal : Flammable
 			velocity.z = -speedZ * Time.deltaTime;
 		else
 			velocity.z = 0.0f;
+
+        velocity.x += perturbation*(Random.value - 0.5f);
+        velocity.z += perturbation*(Random.value - 0.5f);
 
 		if (onGround && Input.GetKey("space"))
 		{
