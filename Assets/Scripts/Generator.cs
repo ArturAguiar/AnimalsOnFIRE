@@ -14,7 +14,7 @@ public class Generator : MonoBehaviour {
 	public float squirrelFreq = 1.0f;
 	public float bushFreq = 2.0f;
 	public float deerFreq = 0.5f;
-	public float bombFreq = 0.2f;
+    public float bombFreq = 0.8f;
 
 	// Use this for initialization
 	void Start () 
@@ -34,8 +34,8 @@ public class Generator : MonoBehaviour {
 		if (Random.Range(0.0f, 100.0f) <= bushFreq)
 			Instantiate (bush, new Vector3 (10, 1, 5 * Random.value - 2.5f), new Quaternion ());
 
-		if (Random.Range(0.0f, 100.0f) <= bombFreq)
-            Instantiate(bomb, new Vector3(10, 1, 5 * Random.value - 2.5f), new Quaternion());
+        if (Random.Range(0.0f, 100.0f) <= bombFreq)
+            Instantiate (bomb, new Vector3 (10, 1, 5*Random.value - 2.5f), new Quaternion());
 
 	}
 }
