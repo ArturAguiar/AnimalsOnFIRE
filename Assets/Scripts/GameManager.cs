@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     public int numOnFire = 0;
 
-    public int score;
+    public static int score;
 
 	// Use this for initialization
 	void Start () {

@@ -4,6 +4,8 @@ using System.Collections;
 public class TitleScreen : MonoBehaviour {
 
     public Texture backgroundTexture;
+	public Texture instructionsTexture;
+	private bool clickedOnce = false;
 
 	// Use this for initialization
 	void Start () {
@@ -13,14 +15,20 @@ public class TitleScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKey("return"))
+        if (Input.GetKeyDown("return"))
         {
-            Application.LoadLevel(1);
+			if (clickedOnce)
+            	Application.LoadLevel(1);
+			else
+				clickedOnce = true;
         }
 	}
 
     void OnGUI()
     {
-        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), backgroundTexture);
+		if (clickedOnce)
+			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), instructionsTexture);
+		else
+        	GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), backgroundTexture);
     }
 }

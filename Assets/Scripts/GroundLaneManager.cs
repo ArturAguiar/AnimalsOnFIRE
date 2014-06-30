@@ -22,6 +22,7 @@ public class TileMarkovChain
 		}
 		//random = new Random();
 		this.maxHeight = maxHeight;
+		tr.Close();
 	}
 	
 	public TileTypes NextType(TileTypes tileType, int selfHeight, int leftHeight, int rightHeight)
