@@ -5,7 +5,6 @@ public class Bush : Flammable
 {
 	private SpriteRenderer spriteRenderer;
 
-
 	// Use this for initialization
 	new void Start () 
 	{

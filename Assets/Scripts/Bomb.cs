@@ -9,6 +9,7 @@ public class Bomb : Flammable {
     private const int explosionTime = 20;
 
     public GameObject explosion;
+    public GameObject currentExplosion = null;
 
     public List<Animal> animals;
 
@@ -17,6 +18,7 @@ public class Bomb : Flammable {
         gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
 
         animals = new List<Animal>();
+        state = State.IDLE;
 	}
 	
 	// Update is called once per frame
@@ -26,7 +28,7 @@ public class Bomb : Flammable {
                                       this.transform.position.y,
                                       this.transform.position.z);
 
-        if (onFire && fireLength == 0)
+        if (state == State.BURNING && fireLength == 0)
         {
             foreach (Animal a in animals)
             {
@@ -35,24 +37,24 @@ public class Bomb : Flammable {
             fireLength++;
         }
 
-        if (onFire)
+        if (state == State.BURNING)
         {
             fireLength++;
         }
 
         if (fireLength > explosionTime || this.transform.position.x < -5)
         {
-            Destroy(explosion);
+            Destroy(currentExplosion);
             Destroy(this.gameObject);
         }
 	}
 
     public override void CatchFire()
     {
-        if(!onFire)
-            explosion = (GameObject) Instantiate(explosion, this.transform.position, new Quaternion());
+        if(state != State.BURNING)
+            currentExplosion = (GameObject) Instantiate(explosion, this.transform.position, new Quaternion());
 
-        onFire = true;
+        state = State.BURNING;
     }
 
     public override void Startle(float x, float z)
