@@ -72,10 +72,6 @@ public class Animal : Flammable
 				velocity.z += runawayspeed * Time.deltaTime * direction.y;
 				
 			}
-			spriteRenderer.color = Color.white;
-			this.transform.position = new Vector3(this.transform.position.x + velocity.x,
-			                                      this.transform.position.y + velocity.y,
-			                                      this.transform.position.z + velocity.z);
 			
 			return;
 		}
