@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 
 	public float scrollSpeed;
 
+    public int numOnFire = 0;
+
     public int score;
 
 	// Use this for initialization
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 	
 		List<Animal> newanimals = new List<Animal> ();
+        numOnFire = 0;
 
 		foreach (Animal a in animals) 
 		{
@@ -32,8 +35,18 @@ public class GameManager : MonoBehaviour {
 			else
 			{
 				newanimals.Add (a);
+                if (a.state == Flammable.State.BURNING)
+                {
+                    numOnFire++;
+                }
 			}
+
 		}
+
+        if (numOnFire == 0)
+        {
+            Application.LoadLevel(2);
+        }
 		animals = newanimals;
 
 		List<Bush> newbushes = new List<Bush> ();
