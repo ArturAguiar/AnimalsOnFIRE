@@ -68,8 +68,8 @@ public class Animal : Flammable
 				Vector2 direction = position - danger;
 				direction.Normalize();
 				
-				velocity.x += runawayspeed*Time.deltaTime*direction.x;
-				velocity.z += runawayspeed * Time.deltaTime*direction.y;
+				velocity.x += runawayspeed * Time.deltaTime * direction.x;
+				velocity.z += runawayspeed * Time.deltaTime * direction.y;
 				
 			}
 			spriteRenderer.color = Color.white;
