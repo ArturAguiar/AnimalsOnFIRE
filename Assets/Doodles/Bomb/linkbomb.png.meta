@@ -1,13 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-<<<<<<< HEAD
-guid: 7a46e5842a3989d45bd79abdfd228212
-=======
-guid: 162595aeb8f159f43a52d5f3d219f9c7
->>>>>>> d1bc75a70d29fa5dda65dd9e431fe2a7c982bd08
-=======
-guid: a77ecac4631972141ba337b8ecca0f73
->>>>>>> b79d62ecd2e5c8bbff5ddc805377f27b33a3f469
+guid: fa489d573348a6f4fbf35287fc7e68fd
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -41,15 +33,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
   alignment: 0
-=======
-  alignment: 7
->>>>>>> d1bc75a70d29fa5dda65dd9e431fe2a7c982bd08
-=======
-  alignment: 0
->>>>>>> b79d62ecd2e5c8bbff5ddc805377f27b33a3f469
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
