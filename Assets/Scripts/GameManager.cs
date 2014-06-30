@@ -111,8 +111,8 @@ public class GameManager : MonoBehaviour {
 		bushes.Add (b);
 	}
 
-    public void IncrementScore()
+    public void IncrementScore(int increment)
     {
-        score++;
+        score += increment;
     }
 }
