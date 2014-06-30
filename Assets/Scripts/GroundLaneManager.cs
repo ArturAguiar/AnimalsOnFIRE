@@ -133,7 +133,7 @@ class LaneManager
 			int leftHeight = previous[(i + current.Length - 1) % current.Length].Height;
 			if (i == 0) leftHeight = maxHeight;
 			int rightHeight = previous[(i + 1) % current.Length].Height;
-			current[i].TileType = tmc.NextType(previous[i].TileType, previous[i].Height, leftHeight, rightHeight);
+			current[i].TileType = tmc.NextType(previous[i].TileType, previous[i].Height, maxHeight, rightHeight);
 			current[i].Height = previous[i].Height + TileMarkovChain.TileHeightMod(current[i].TileType);
 		}
 		nodes++;
@@ -143,7 +143,7 @@ class LaneManager
 	{
 		return current[laneID];
 	}
-	
+
 	public int NumLanes
 	{
 		get
@@ -231,18 +231,20 @@ public class GroundLaneManager : MonoBehaviour {
 	public int NumLanes;
 	public int MaxHeight;
 	public int RunwayLength;
+	public float Speed;
 	public int GenerationInterval;
-	public int BlocksPerUnit;
+	float BlocksPerUnit;
 	public GroundMesh MeshPrefab;
 	public float minZ;
 	public float maxZ;
 	TileMarkovChain markov;
 	LaneManager lm;
-	int time;
+	float time;
 	LinkedList<GroundMesh> destructionQueue;
 
 	// Use this for initialization
 	void Start () {
+		BlocksPerUnit = 1f / GenerationInterval / (Speed * Time.deltaTime);
 		markov = new TileMarkovChain ("Assets/Markov/input.txt", MaxHeight);
 		lm = new LaneManager(markov, NumLanes, 10, MaxHeight);
 		destructionQueue = new LinkedList<GroundMesh> ();
@@ -258,7 +260,7 @@ public class GroundLaneManager : MonoBehaviour {
 			GroundMesh g = (GroundMesh)Instantiate (MeshPrefab);
 			g.transform.position = new Vector3(10 + offset, 0, minZ);
 			g.transform.localScale = new Vector3(1, 0.5f, (maxZ - minZ) / NumLanes * BlocksPerUnit) / BlocksPerUnit;
-			g.LifeSpan = GenerationInterval * RunwayLength * BlocksPerUnit;
+			g.LifeSpan = (int)(GenerationInterval * RunwayLength * BlocksPerUnit);
 			g.ScrollRate = 1f / GenerationInterval / BlocksPerUnit;
 			g.transform.parent = this.transform;
 			LaneNode ln = lm.GetLaneNode(i);
@@ -274,10 +276,10 @@ public class GroundLaneManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (time == 0)
+		if (time < 0)
 		{
 			GenerateNewRow(0);
-			time = GenerationInterval;
+			time += GenerationInterval;
 		}
 		time--;
 		//go through the queue and delete stale blocks

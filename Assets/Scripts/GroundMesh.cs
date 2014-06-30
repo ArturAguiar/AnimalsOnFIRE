@@ -84,19 +84,22 @@ public static class TileBuilder {
 		}
 		//build base
 		int count = tileBuilder.NumVertices;
-		Vector3 b1 = tileBuilder.GetVertex (count - 1); b1.y = -1;
-		Vector3 b2 = tileBuilder.GetVertex (count - 2); b2.y = -1;
-		Vector3 b3 = tileBuilder.GetVertex (count - 3); b3.y = -1;
-		Vector3 b4 = tileBuilder.GetVertex (count - 4); b4.y = -1;
+		Vector3 b1 = tileBuilder.GetVertex (count - 1);
+		Vector3 b2 = tileBuilder.GetVertex (count - 2);
+		Vector3 b3 = tileBuilder.GetVertex (count - 3);
+		Vector3 b4 = tileBuilder.GetVertex (count - 4);
+		b1.y = b2.y = b3.y = b4.y = -5;
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 1), tileBuilder.GetVertex (count - 2), b2, b1);
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 2), tileBuilder.GetVertex (count - 3), b3, b2);
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 3), tileBuilder.GetVertex (count - 4), b4, b3);
 		tileBuilder.AddQuad (tileBuilder.GetVertex (count - 4), tileBuilder.GetVertex (count - 1), b1, b4);
 		Mesh tile = tileBuilder.CreateMesh ();
-		//Vector2[] uv = new Vector2[tile.vertices.Length];
-		//for (int i = 0; i < uv.Length; i++)
-		//	uv [i] = new Vector2 (0, 0);
-		//tile.uv = uv;
+		Vector2[] uv = (Vector2[])tile.uv.Clone ();
+		for (int i = 0; i < uv.Length; i++)
+			uv [i].y *= 0.5f;
+		for (int i = 0; i < uv.Length - 16; i++)
+			uv [i].y += 0.5f;
+		tile.uv = uv;
 		return tile;
 	}
 }
