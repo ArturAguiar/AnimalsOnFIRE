@@ -59,7 +59,7 @@ public class Flammable : MonoBehaviour
 		if (state == State.BURNING)
 			return; // already on fire.
 
-		if (igniteSounds.Length > 0 && Random.Range(0, 100) < 60)
+		if (igniteSounds.Length > 0)
 			Instantiate(igniteSounds[Random.Range(0, igniteSounds.Length - 1)], this.transform.position, new Quaternion());
 		
 		gameManager.IncrementScore();                   
