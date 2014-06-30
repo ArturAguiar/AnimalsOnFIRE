@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 
 	public float scrollSpeed;
 
+    public int numOnFire = 0;
+
     public int score;
 
 	// Use this for initialization
@@ -17,12 +19,14 @@ public class GameManager : MonoBehaviour {
 		firstAnimal.CatchFire();
 
         score = 0;
+		DontDestroyOnLoad (transform.gameObject);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 		List<Animal> newanimals = new List<Animal> ();
+        numOnFire = 0;
 
 		foreach (Animal a in animals) 
 		{
@@ -32,8 +36,20 @@ public class GameManager : MonoBehaviour {
 			else
 			{
 				newanimals.Add (a);
+                if (a.state == Flammable.State.BURNING)
+                {
+                    numOnFire++;
+                }
 			}
+
 		}
+
+		score += (int)(Mathf.Pow (numOnFire, 1.5f));
+
+        if (numOnFire == 0)
+        {
+            Application.LoadLevel(2);
+        }
 		animals = newanimals;
 
 		List<Bush> newbushes = new List<Bush> ();
@@ -72,9 +88,4 @@ public class GameManager : MonoBehaviour {
 	{
 		bushes.Add (b);
 	}
-
-    public void IncrementScore()
-    {
-        score++;
-    }
 }

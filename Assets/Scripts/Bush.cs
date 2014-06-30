@@ -26,4 +26,10 @@ public class Bush : Flammable
 		                                      this.transform.position.y,
 		                                      this.transform.position.z);
 	}
+
+	public override void CatchFire ()
+	{
+		gameManager.score += 500;
+		base.CatchFire ();
+	}
 }

@@ -49,8 +49,11 @@ public class Flammable : MonoBehaviour
 			if (animator)
 				animator.Play("Startled");
 
-			if (startleSounds.Length > 0 && Random.Range(0, 100) < 60)
-				Instantiate(startleSounds[Random.Range(0, startleSounds.Length - 1)], this.transform.position, new Quaternion());
+			if (startleSounds.Length > 0)
+			{
+				AudioSource newAudio = (AudioSource)Instantiate(startleSounds[Random.Range(0, startleSounds.Length - 1)], this.transform.position, new Quaternion());
+				newAudio.transform.parent = this.transform;
+			}
 		}
 	}
 	
@@ -60,9 +63,10 @@ public class Flammable : MonoBehaviour
 			return; // already on fire.
 
 		if (igniteSounds.Length > 0)
-			Instantiate(igniteSounds[Random.Range(0, igniteSounds.Length - 1)], this.transform.position, new Quaternion());
-		
-		gameManager.IncrementScore();                   
+		{
+			AudioSource newAudio = (AudioSource)Instantiate(igniteSounds[Random.Range(0, igniteSounds.Length - 1)], this.transform.position, new Quaternion());
+			newAudio.transform.parent = this.transform;
+		}    
 
 		innerFire.emit = true;
 		outerFire.emit = true;
