@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour {
 	List<Animal> animals = new List<Animal>();
 	List<Bush> bushes = new List<Bush> ();
 
+    public GameObject flame;
+    List<GameObject> flames = new List<GameObject>();
+
 	public float scrollSpeed;
 
     public int numOnFire = 0;
@@ -19,7 +22,6 @@ public class GameManager : MonoBehaviour {
 		firstAnimal.CatchFire();
 
         score = 0;
-		DontDestroyOnLoad (transform.gameObject);
 	}
 	
 	// Update is called once per frame
@@ -65,6 +67,28 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		bushes = newbushes;
+
+        Debug.Log(flames);
+        Debug.Log(numOnFire);
+        while (flames.Count < numOnFire)
+        {
+            GameObject addFlame = (GameObject)Instantiate(flame, new Vector3(-3 + Random.Range(-0.5f, 0.5f), 0, Random.Range(-3, 3)), new Quaternion());
+
+            ParticleEmitter[] emitters = addFlame.GetComponentsInChildren<ParticleEmitter>();
+            foreach (ParticleEmitter pe in emitters)
+            {
+                pe.emit = true;
+            }
+
+            flames.Add(addFlame);
+        }
+
+        while (flames.Count > numOnFire)
+        {
+            GameObject removeFlame = flames[0];
+            flames.Remove(removeFlame);
+            Destroy(removeFlame);
+        }
 	}
 
 
