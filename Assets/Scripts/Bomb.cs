@@ -51,10 +51,10 @@ public class Bomb : Flammable {
 
     public override void CatchFire()
     {
-        if(state != State.BURNING)
-            currentExplosion = (GameObject) Instantiate(explosion, this.transform.position, new Quaternion());
-
-        state = State.BURNING;
+		if(state != State.BURNING)
+			currentExplosion = (GameObject) Instantiate(explosion, this.transform.position, new Quaternion());
+		
+		base.CatchFire();
     }
 
     public override void Startle(float x, float z)

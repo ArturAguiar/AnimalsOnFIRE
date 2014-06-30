@@ -14,6 +14,7 @@ public class Flammable : MonoBehaviour
 	public int scoreWorth = 1;
 	public AudioSource[] startleSounds;
 	public AudioSource[] igniteSounds;
+	public AudioSource[] fireSounds;
 
 	private ParticleEmitter innerFire;
 	private ParticleEmitter outerFire;
@@ -68,12 +69,24 @@ public class Flammable : MonoBehaviour
 			AudioSource newAudio = (AudioSource)Instantiate(igniteSounds[Random.Range(0, igniteSounds.Length - 1)], this.transform.position, new Quaternion());
 			newAudio.transform.parent = this.transform;
 		}
+
+		if (fireSounds.Length > 0)
+		{
+			AudioSource newAudio = (AudioSource)Instantiate(fireSounds[Random.Range(0, fireSounds.Length - 1)], this.transform.position, new Quaternion());
+			newAudio.transform.parent = this.transform;
+		}
 		
 		gameManager.IncrementScore(scoreWorth);                   
 
-		innerFire.emit = true;
-		outerFire.emit = true;
-		fireLight.range = 1.2f;
+		if (innerFire != null)
+			innerFire.emit = true;
+
+		if (outerFire != null)
+			outerFire.emit = true;
+
+		if (fireLight != null)
+			fireLight.range = 1.2f;
+
 		state = State.BURNING;
 
 		if (animator)
