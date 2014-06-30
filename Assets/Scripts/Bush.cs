@@ -3,10 +3,6 @@ using System.Collections;
 
 public class Bush : Flammable 
 {
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 	private SpriteRenderer spriteRenderer;
 
 
