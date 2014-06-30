@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 
 public class TileMarkovChain
 {
@@ -10,19 +9,20 @@ public class TileMarkovChain
 	int maxHeight;
 	static int enumSize = 5;
 	
-	public TileMarkovChain(string fileName, int maxHeight)
+	public TileMarkovChain(string s, int maxHeight)
 	{
 		data = new float[enumSize * enumSize];
-		TextReader tr = new StreamReader(fileName);
+		//TextAsset ta = Resources.Load (fileName) as TextAsset;
+		//string s = ta.text;
+		string[] lines = s.Split ('\n');
 		for (int i = 0; i < enumSize; i++)
 		{
-			string[] strs = tr.ReadLine().Split(' ');
+			string[] strs = lines[i].Split(' ');
 			for (int j = 0; j < enumSize; j++)
 				data[i * enumSize + j] = System.Convert.ToSingle(strs[j]);
 		}
 		//random = new Random();
 		this.maxHeight = maxHeight;
-		tr.Close();
 	}
 	
 	public TileTypes NextType(TileTypes tileType, int selfHeight, int leftHeight, int rightHeight)
@@ -246,16 +246,24 @@ public class GroundLaneManager : MonoBehaviour {
 	LinkedList<GroundMesh> destructionQueue;
 	int cutBlocks;
 	bool[] cutLanes;
+	bool loaded = false;
 	
 	// Use this for initialization
 	void Start () {
 		BlocksPerUnit = 1f / GenerationInterval / (Speed * Time.deltaTime);
-		markov = new TileMarkovChain ("Assets/Markov/input.txt", MaxHeight);
+		string s = "0.2 0.2 0.2 0.1 0.3 -\n"+
+				"0.25 0.25 0 0.5 0 /\n"+
+				"0.25 0.25 0 0 0.5 \\\n"+
+				"0.5 0.5 0 0 0 [\n"+
+				"0.5 0 0.5 0 0 ]\n"+
+				"- / \\ [ ]";
+		markov = new TileMarkovChain (s, MaxHeight);
 		lm = new LaneManager(markov, NumLanes, 10, MaxHeight);
 		destructionQueue = new LinkedList<GroundMesh> ();
 		for (int i = 0; i < RunwayLength * BlocksPerUnit; i++)
 			GenerateNewRow (-RunwayLength + (float)(i + 1) / BlocksPerUnit);
 		cutLanes = new bool[NumLanes];
+		loaded = true;
 	}
 	
 	private void GenerateNewRow(float offset)
@@ -282,6 +290,7 @@ public class GroundLaneManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!loaded) return;
 		if (time < 0)
 		{
 			if (PitChance < Random.value && cutBlocks < -PitMaxLength)
