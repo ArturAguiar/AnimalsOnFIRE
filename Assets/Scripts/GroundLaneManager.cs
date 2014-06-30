@@ -130,10 +130,10 @@ class LaneManager
 		else
 			for (int i = 0; i < current.Length; i++)
 		{
-			int leftHeight = previous[(i + current.Length - 1) % current.Length].Height;
-			if (i == 0) leftHeight = maxHeight;
-			int rightHeight = previous[(i + 1) % current.Length].Height;
-			current[i].TileType = tmc.NextType(previous[i].TileType, previous[i].Height, maxHeight, rightHeight);
+			int leftHeight = previous[(i + 1) % current.Length].Height;
+			int rightHeight = previous[(i + current.Length - 1) % current.Length].Height;
+			if (i == current.Length - 1) leftHeight = maxHeight;
+			current[i].TileType = tmc.NextType(previous[i].TileType, previous[i].Height, leftHeight, rightHeight);
 			current[i].Height = previous[i].Height + TileMarkovChain.TileHeightMod(current[i].TileType);
 		}
 		nodes++;
@@ -237,10 +237,14 @@ public class GroundLaneManager : MonoBehaviour {
 	public GroundMesh MeshPrefab;
 	public float minZ;
 	public float maxZ;
+	public float PitChance;
+	public int PitMaxLength;
 	TileMarkovChain markov;
 	LaneManager lm;
 	float time;
 	LinkedList<GroundMesh> destructionQueue;
+	int cutBlocks;
+	bool[] cutLanes;
 
 	// Use this for initialization
 	void Start () {
@@ -250,13 +254,14 @@ public class GroundLaneManager : MonoBehaviour {
 		destructionQueue = new LinkedList<GroundMesh> ();
 		for (int i = 0; i < RunwayLength * BlocksPerUnit; i++)
 			GenerateNewRow (-RunwayLength + (float)(i + 1) / BlocksPerUnit);
+		cutLanes = new bool[NumLanes];
 	}
 
 	private void GenerateNewRow(float offset)
 	{
-		if (lm != null)
-			lm.GenerateNewRow();
+		lm.GenerateNewRow();
 		for (int i = 0; i < NumLanes; i++) {
+			if (cutBlocks > 0 && cutLanes[i]) continue;
 			GroundMesh g = (GroundMesh)Instantiate (MeshPrefab);
 			g.transform.position = new Vector3(10 + offset, 0, minZ);
 			g.transform.localScale = new Vector3(1, 0.5f, (maxZ - minZ) / NumLanes * BlocksPerUnit) / BlocksPerUnit;
@@ -270,14 +275,20 @@ public class GroundLaneManager : MonoBehaviour {
 			g.renderer.material.mainTextureOffset = new Vector2((float)g.Height / (MaxHeight + 1), 0);
 			g.GenerateMesh();
 			destructionQueue.AddLast (g);
-			//set tile type
 		}
+		cutBlocks--;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (time < 0)
 		{
+			if (PitChance < Random.value && cutBlocks < -PitMaxLength)
+			{
+				cutBlocks = (int)(PitMaxLength * Random.value);
+				for (int i = 0; i < NumLanes; i++)
+					cutLanes[i] = Random.value >= 0.5f;
+			}
 			GenerateNewRow(0);
 			time += GenerationInterval;
 		}
